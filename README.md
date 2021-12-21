@@ -2,6 +2,8 @@
 
 Write *.xlsx files in a browser or Node.js
 
+### [Demo](https://kuechlin.github.io/typexlsx/)
+
 ## Features
 - small
 - styles

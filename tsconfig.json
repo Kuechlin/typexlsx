@@ -15,7 +15,8 @@
         "declaration": true,
         "emitDeclarationOnly": true,
         "jsx": "react",
-        "outDir": "dist"
+        "outDir": "dist",
+        "sourceMap": true
     },
     "include": ["src"],
     "exclude": ["node_modules"]

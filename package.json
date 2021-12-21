@@ -1,8 +1,9 @@
 {
     "name": "typexlsx",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "files": [
-        "dist"
+        "dist",
+        "src"
     ],
     "main": "./dist/typexlsx.umd.js",
     "module": "./dist/typexlsx.es.js",

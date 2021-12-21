@@ -59,14 +59,14 @@ export default class WorkbookGenerator {
         docs['xl/workbook.xml'] = this.generateWorkbook(book);
         // generate content types for all files
         docs['[Content_Types].xml'] = generateContentTypes(
-            {
-                contentType: XMLContentType.Workbook,
-                path: 'xl/workbook.xml',
-            },
             ...sheets.map(({ path }) => ({
                 contentType: XMLContentType.Worksheets,
                 path: path,
             })),
+            {
+                contentType: XMLContentType.Workbook,
+                path: 'xl/workbook.xml',
+            },
             {
                 contentType: XMLContentType.SharedStrings,
                 path: 'xl/sharedStrings.xml',
@@ -85,13 +85,13 @@ export default class WorkbookGenerator {
             })),
             {
                 id: sheets.length + 1,
-                type: XMLRelationshipType.Styles,
-                target: 'styles.xml',
+                type: XMLRelationshipType.SharedStrings,
+                target: 'sharedStrings.xml',
             },
             {
                 id: sheets.length + 2,
-                type: XMLRelationshipType.SharedStrings,
-                target: 'sharedStrings.xml',
+                type: XMLRelationshipType.Styles,
+                target: 'styles.xml',
             }
         );
         // generate root rels for workbook

@@ -3,7 +3,7 @@ import JSZip from 'jszip';
 import { Workbook } from './types';
 import xml from './xml';
 
-export default async function toXlsx(book: Workbook) {
+export default async function generateXlsx(...book: Workbook) {
     var generator = new WorkbookGenerator();
 
     var doc = generator.generate(book);

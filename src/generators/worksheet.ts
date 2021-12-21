@@ -16,15 +16,19 @@ export default class WorksheetGenerator {
     constructor(private workbook: WorkbookGenerator) {}
 
     generate = (sheet: Sheet) => {
+        const mergeCells = this.generateMergedCells(sheet.rows);
         return $doc(
             $ele(
                 'worksheet',
                 WORKSHEET_XML_ATTRIBUTES,
-                $ele('sheetData', {}, ...sheet.rows.map(this.generateRow)),
-                $ele('mergeCells')
+                this.generateSheet(sheet.rows),
+                ...(mergeCells ? [mergeCells] : [])
             )
         );
     };
+
+    generateSheet = (rows: Row[]) =>
+        $ele('sheetData', {}, ...rows.map(this.generateRow));
 
     generateRow = (row: Row, index: number): XMLElement => {
         // To ensure the row number starts as in Excel.
@@ -80,6 +84,27 @@ export default class WorksheetGenerator {
         }
         return element;
     };
+
+    generateMergedCells(rows: Row[]) {
+        const cells: XMLElement[] = [];
+        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+            const rowNumber = rowIndex + 1;
+            const row = rows[rowIndex];
+            for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
+                const { span, rowSpan } = row[cellIndex];
+                if (span || rowSpan) {
+                    let start = generateCellNumber(cellIndex, rowNumber);
+                    let end = generateCellNumber(
+                        cellIndex + (span || 0),
+                        rowNumber + (rowSpan || 0)
+                    );
+                    cells.push($ele('mergeCell', { ref: `${start}:${end}` }));
+                }
+            }
+        }
+        if (cells.length === 0) return null;
+        return $ele('mergeCells', { count: cells.length }, ...cells);
+    }
 }
 /*
 <?xml version="1.0" ?>

@@ -21,7 +21,14 @@ export default class StylesGenerator {
     private fills = new FillsGenerator();
     private borders = new BordersGenerator();
 
-    styles: CellStyle[] = [];
+    styles: CellStyle[] = [
+        {
+            formatId: 0,
+            fontId: 0,
+            fillId: 0,
+            borderId: 0,
+        },
+    ];
     stylesIndex = new Map<string, number>();
 
     private getStyleKey = ({
@@ -36,6 +43,14 @@ export default class StylesGenerator {
         `${formatId}/${fontId}/${fillId}/${borderId}/${align}/${alignVertical}/${
             wrap ? 1 : 0
         }`;
+
+    private generateCells = () => {
+        return $ele(
+            'cellXfs',
+            { count: this.styles.length },
+            ...this.styles.map(this.generateCell)
+        );
+    };
 
     private generateCell = (cell: CellStyle) => {
         const element = $ele('xf', {
@@ -96,7 +111,7 @@ export default class StylesGenerator {
                 this.fonts.generate(),
                 this.fills.generate(),
                 this.borders.generate(),
-                ...this.styles.map(this.generateCell)
+                this.generateCells()
             )
         );
 }
@@ -110,6 +125,7 @@ export default class StylesGenerator {
     <borders />
     <cellXfs count="1">
         <xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" />
+        ...
     </cellXfs>
 </styleSheet>
 */

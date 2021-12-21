@@ -31,8 +31,21 @@ export type XLSXBorders = {
 };
 export type XLSXBorder = {
     color?: string;
-    style?: string;
+    style?: XLSXBorderStyle;
 };
+export type XLSXBorderStyle =
+    | 'thin'
+    | 'medium'
+    | 'thick'
+    | 'dotted'
+    | 'hair'
+    | 'dashed'
+    | 'mediumDashed'
+    | 'dashDot'
+    | 'mediumDashDot'
+    | 'dashDotDot'
+    | 'mediumDashDotDot'
+    | 'slantDashDot';
 export const isXLSXBorder = (val: any): val is XLSXBorder => {
     return typeof val === 'object' && ('color' in val || 'style' in val);
 };

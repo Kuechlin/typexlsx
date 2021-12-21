@@ -7,6 +7,7 @@ export default class BordersGenerator {
     bordersIndex = new Map<string, number>();
 
     constructor() {
+        this.borders.push({});
         this.bordersIndex.set(this.getBorderKey({}), 0);
     }
 

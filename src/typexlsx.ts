@@ -4,11 +4,11 @@ import { Workbook } from './types';
 import xml from './xml';
 
 export default async function generateXlsx(...book: Workbook) {
-    var generator = new WorkbookGenerator();
+    const generator = new WorkbookGenerator();
 
-    var doc = generator.generate(book);
+    const doc = generator.generate(book);
 
-    var zip = new JSZip();
+    const zip = new JSZip();
     for (const [key, value] of Object.entries(doc)) {
         zip.file(key, xml.stringify(value));
     }

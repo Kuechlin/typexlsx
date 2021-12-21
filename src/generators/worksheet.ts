@@ -12,6 +12,7 @@ import WorkbookGenerator from './workbook';
 //    - the default value for `t` is `"n"` (a number or a date).
 //    - Available Excel cell types:
 //    - https://github.com/SheetJS/sheetjs/blob/19620da30be2a7d7b9801938a0b9b1fd3c4c4b00/docbits/52_datatype.md
+
 export default class WorksheetGenerator {
     constructor(private workbook: WorkbookGenerator) {}
 
@@ -120,5 +121,5 @@ export default class WorksheetGenerator {
     <mergeCells count="1">
         <mergeCell ref="A3:F3" />
     </mergeCells>
-</worksheet>`
+</worksheet>
 */

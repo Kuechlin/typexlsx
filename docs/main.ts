@@ -7,7 +7,7 @@ const app = document.getElementById('app');
 if (!app) throw new Error('app not found');
 
 var title = app.appendChild(document.createElement('h1'));
-title.innerText = 'Hallo Welt';
+title.innerText = 'typexlsx';
 
 var btn = app.appendChild(document.createElement('button'));
 btn.innerText = 'Download XLSX';
@@ -16,10 +16,18 @@ var log = app.appendChild(document.createElement('p'));
 const TEST_FILE: Sheet = {
     name: 'TestFile',
     rows: [
-        [{ value: 'A' }, { value: 'B' }, { value: 'C' }],
+        [
+            { value: 'A' },
+            { value: 'B' },
+            {
+                value: 'C',
+                font: { family: 'Arial', color: '#123456' },
+                fill: '#fdfdfd',
+            },
+        ],
         [{ value: 1 }, { value: 2 }, { value: 3 }],
-        //        [{ value: 'test', span: 3, rowSpan: 2 }, {}, {}],
-        //        [{}, {}, {}],
+        [{ value: 'test', span: 3, rowSpan: 2 }, {}, {}],
+        [{}, {}, {}],
     ],
 };
 

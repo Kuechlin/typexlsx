@@ -1,9 +1,11 @@
 import path from 'path';
 import { defineConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 import pgk from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    plugins: [visualizer()],
     build: {
         lib: {
             entry: path.resolve(__dirname, 'src', 'typexlsx.ts'),

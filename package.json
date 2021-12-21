@@ -1,13 +1,29 @@
 {
-  "name": "typexlsx",
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "^4.4.4",
-    "vite": "^2.7.2"
-  }
+    "name": "typexlsx",
+    "version": "0.0.1",
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/typexlsx.umd.js",
+    "module": "./dist/typexlsx.es.js",
+    "types": "./dist/typexlsx.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/typexlsx.es.js",
+            "require": "./dist/typexlsx.umd.js"
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build && tsc",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.2",
+        "typescript": "^4.4.4",
+        "vite": "^2.7.2"
+    },
+    "dependencies": {
+        "jszip": "^3.7.1"
+    }
 }

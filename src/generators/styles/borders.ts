@@ -1,6 +1,6 @@
-import { isXLSXBorder, XLSXBorder, XLSXBorders } from '../types';
-import getColor from '../utils/getColor';
-import { ele } from '../xml';
+import { isXLSXBorder, XLSXBorder, XLSXBorders } from '../../types';
+import convertToExcelRgb from '../../utils/convertToExcelRgb';
+import { $ele } from '../../xml';
 
 export default class BordersGenerator {
     borders: XLSXBorders[] = [];
@@ -27,11 +27,11 @@ export default class BordersGenerator {
         if (border?.color && !style) {
             style = 'thin';
         }
-        return ele(
+        return $ele(
             direction,
             style ? { style } : {},
             ...(border?.color
-                ? [ele('color', { rgb: getColor(border.color) })]
+                ? [$ele('color', { rgb: convertToExcelRgb(border.color) })]
                 : [])
         );
     };
@@ -57,11 +57,11 @@ export default class BordersGenerator {
     };
 
     generate = () =>
-        ele(
+        $ele(
             'borders',
             { count: this.borders.length },
             ...this.borders.map(({ start, end, top, bottom, diagonal }) =>
-                ele(
+                $ele(
                     'border',
                     {},
                     this.getBorderElement('start', start),

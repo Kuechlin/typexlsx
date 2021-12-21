@@ -1,39 +1,6 @@
-export interface XMLDocument {
-    version: string;
-    encoding: string;
-    standalone?: string;
-    $elements: XMLElement[];
-}
-export interface XMLElement extends Record<string, any> {
-    $type: 'element';
-    $name: string;
-    $elements?: (XMLElement | XMLValue)[];
-}
-export interface XMLValue {
-    $type: 'value';
-    $value: string;
-}
-
-export const doc = (...elements: XMLElement[]): XMLDocument => ({
-    version: '1.0',
-    encoding: 'utf-8',
-    standalone: 'yes',
-    $elements: elements,
-});
-export const ele = (
-    name: string,
-    attributes?: Record<string, any>,
-    ...elements: (XMLElement | XMLValue)[]
-): XMLElement => ({
-    ...attributes,
-    $type: 'element',
-    $name: name,
-    $elements: elements,
-});
-export const val = (value: any): XMLValue => ({
-    $type: 'value',
-    $value: String(value),
-});
+import { XMLDocument, XMLElement, XMLValue } from './types';
+export type { XMLDocument, XMLElement, XMLValue };
+export * from './utils';
 
 const stringifyAttributes = (attr: Record<string, any>) => {
     let xml = '';
@@ -64,7 +31,7 @@ const stringifyElement = (ele: XMLElement | XMLValue): string => {
     return xml;
 };
 
-export const XML = {
+export default {
     stringify(doc: XMLDocument): string {
         let xml = `<?xml${stringifyAttributes(doc)}?>`;
         for (const element of doc.$elements) {

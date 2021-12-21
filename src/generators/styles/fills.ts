@@ -1,5 +1,5 @@
-import getColor from '../utils/getColor';
-import { ele, XMLElement } from '../xml';
+import convertToExcelRgb from '../../utils/convertToExcelRgb';
+import { $ele, XMLElement } from '../../xml';
 
 type FillType = string | { gray125?: true };
 
@@ -23,29 +23,29 @@ export default class FillsGenerator {
     };
 
     generate = () =>
-        ele(
+        $ele(
             'fills',
             { count: this.fills.length },
             ...this.fills.map((fill) => {
                 let pattern: XMLElement;
                 if (typeof fill === 'string') {
-                    pattern = ele(
+                    pattern = $ele(
                         'patternFill',
                         { patternType: 'solid' },
-                        ele('fgColor', { rgb: getColor(fill) }),
+                        $ele('fgColor', { rgb: convertToExcelRgb(fill) }),
                         // Whatever that could mean.
-                        ele('bgColor', { indexed: 64 })
+                        $ele('bgColor', { indexed: 64 })
                     );
                 } else if (
                     typeof fill === 'object' &&
                     'gray125' in fill &&
                     fill.gray125
                 ) {
-                    pattern = ele('patternFill', { patternType: 'gray125' });
+                    pattern = $ele('patternFill', { patternType: 'gray125' });
                 } else {
-                    pattern = ele('patternFill', { patternType: 'none' });
+                    pattern = $ele('patternFill', { patternType: 'none' });
                 }
-                return ele('fill', {}, pattern);
+                return $ele('fill', {}, pattern);
             })
         );
 }

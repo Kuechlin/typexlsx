@@ -1,12 +1,12 @@
-import { XLSXFont } from '../types';
-import getColor from '../utils/getColor';
-import { XMLElement, ele } from '../xml';
+import { XLSXFont } from '../../types';
+import convertToExcelRgb from '../../utils/convertToExcelRgb';
+import { XMLElement, $ele } from '../../xml';
 
 const FONT_FAMILY = 'Calibri';
 const FONT_SIZE = 12;
 const FONT_STYLES: Record<string, XMLElement> = {
-    bold: ele('b'),
-    italic: ele('i'),
+    bold: $ele('b'),
+    italic: $ele('i'),
 };
 
 export default class FontsGenerator {
@@ -34,25 +34,25 @@ export default class FontsGenerator {
     };
 
     generate = () =>
-        ele(
+        $ele(
             'fonts',
             { count: this.fonts.length },
             ...this.fonts.map(({ size, color, style, family }) =>
-                ele(
+                $ele(
                     'font',
                     {},
-                    ele('sz', { val: size ?? FONT_SIZE }),
-                    ele(
+                    $ele('sz', { val: size ?? FONT_SIZE }),
+                    $ele(
                         'color',
-                        color ? { rgb: getColor(color) } : { theme: 1 }
+                        color ? { rgb: convertToExcelRgb(color) } : { theme: 1 }
                     ),
-                    ele('name', { val: family ?? FONT_FAMILY }),
+                    $ele('name', { val: family ?? FONT_FAMILY }),
                     // It's not clear what the `<family/>` tag means or does.
                     // It seems to always be `<family val="2"/>` even for different
                     // font families (Calibri, Arial, etc).
-                    ele('family', { val: 2 }),
+                    $ele('family', { val: 2 }),
                     // It's not clear what the `<scheme/>` tag means or does.
-                    ele('scheme', { val: 'minor' }),
+                    $ele('scheme', { val: 'minor' }),
                     // add font style
                     ...(style && FONT_STYLES[style] ? [FONT_STYLES[style]] : [])
                 )

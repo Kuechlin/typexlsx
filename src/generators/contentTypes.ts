@@ -1,5 +1,16 @@
-import { Sheet } from '../types';
-import { doc, ele } from '../xml';
+import { $doc, $ele } from '../xml';
+
+export enum XMLContentType {
+    Workbook = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml',
+    Worksheets = 'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml',
+    Styles = 'application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml',
+    SharedStrings = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml',
+}
+
+export type Override = {
+    path: string;
+    contentType: XMLContentType;
+};
 
 /**
  * File: ./[Content_Types].xml
@@ -7,44 +18,28 @@ import { doc, ele } from '../xml';
  * - Links all other files
  * - Defines Content Type for Files
  */
-export default function generateContentTypes(sheets: Sheet[]) {
-    return doc(
-        ele(
+export default function generateContentTypes(...overrides: Override[]) {
+    return $doc(
+        $ele(
             'Types',
             {
                 xmlns: 'http://schemas.openxmlformats.org/package/2006/content-types',
             },
-            ele('Default', {
+            $ele('Default', {
                 Extension: 'xml',
                 ContentType: 'application/xml',
             }),
-            ele('Default', {
+            $ele('Default', {
                 Extension: 'rels',
                 ContentType:
                     'application/vnd.openxmlformats-package.relationships+xml',
             }),
-            ...sheets.map((_, index) =>
-                ele('Override', {
-                    PartName: `/xl/worksheets/sheet${index + 1}.xml`,
-                    ContentType:
-                        'application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml',
+            ...overrides.map((o) =>
+                $ele('Override', {
+                    PartName: o.path.startsWith('/') ? o.path : '/' + o.path,
+                    ContentType: o.contentType.toString(),
                 })
-            ),
-            ele('Override', {
-                PartName: '/xl/workbook.xml',
-                ContentType:
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml',
-            }),
-            ele('Override', {
-                PartName: '/xl/styles.xml',
-                ContentType:
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml',
-            }),
-            ele('Override', {
-                PartName: '/xl/sharedStrings.xml',
-                ContentType:
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml',
-            })
+            )
         )
     );
 }

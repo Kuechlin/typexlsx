@@ -8,6 +8,7 @@ export type Sheet = {
 export type Row = Cell[];
 
 export type CellValue = undefined | null | string | number | boolean | Date;
+
 export type Cell = {
     value?: CellValue;
     align?: 'left' | 'center' | 'right';

@@ -1,4 +1,4 @@
-import { ele } from '../xml';
+import { $ele } from '../../xml';
 
 // There seem to be about 100 "built-in" formats in Excel.
 // https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2010/ee857658(v=office.14)?redirectedfrom=MSDN
@@ -17,13 +17,13 @@ export default class FormatsGenerator {
     };
 
     generate = () =>
-        ele(
+        $ele(
             'numFmts',
             {
                 count: this.formats.length,
             },
             ...this.formats.map((value, index) =>
-                ele('numFmt', {
+                $ele('numFmt', {
                     numFmtId: FORMAT_ID_STARTS_FROM + index,
                     formatCode: value,
                 })

@@ -1,4 +1,4 @@
-import { doc, ele, val } from '../xml';
+import { $doc, $ele, $val } from '../xml';
 
 /**
  * Escapes text for XML: replaces ">" with "&gt;", etc.
@@ -16,7 +16,7 @@ function escapeString(str: string) {
 export default class SharedStringsGenerator {
     sharedStrings: string[] = [];
 
-    getSharedString = (value: string) => {
+    create = (value: string) => {
         value = escapeString(value);
         let index = this.sharedStrings.indexOf(value);
         if (index === -1) {
@@ -26,8 +26,8 @@ export default class SharedStringsGenerator {
     };
 
     generate = () =>
-        doc(
-            ele(
+        $doc(
+            $ele(
                 'sst',
                 {
                     xmlns: 'http://purl.oclc.org/ooxml/spreadsheetml/main',
@@ -35,11 +35,12 @@ export default class SharedStringsGenerator {
                     uniqueCount: this.sharedStrings.length,
                 },
                 ...this.sharedStrings.map((str) =>
-                    ele('si', {}, ele('t', {}, val(str)))
+                    $ele('si', {}, $ele('t', {}, $val(str)))
                 )
             )
         );
 }
+
 /*
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sst xmlns="http://purl.oclc.org/ooxml/spreadsheetml/main" count="7" uniqueCount="7">

@@ -1,5 +1,5 @@
-import { Cell } from '../types';
-import { doc, ele } from '../xml';
+import { Cell } from '../../types';
+import { $doc, $ele } from '../../xml';
 import BordersGenerator from './borders';
 import FillsGenerator from './fills';
 import FontsGenerator from './fonts';
@@ -38,7 +38,7 @@ export default class StylesGenerator {
         }`;
 
     private generateCell = (cell: CellStyle) => {
-        const element = ele('xf', {
+        const element = $ele('xf', {
             numFmtId: cell.formatId,
             applyNumberFormat: cell.formatId ? 1 : undefined,
             fontId: cell.fontId,
@@ -53,7 +53,7 @@ export default class StylesGenerator {
 
         if (cell.align || cell.alignVertical || cell.wrap) {
             element.$elements = [
-                ele('alignment', {
+                $ele('alignment', {
                     horizontal: cell.align,
                     vertical: cell.alignVertical,
                     wrapText: cell.wrap ? 1 : undefined,
@@ -63,7 +63,7 @@ export default class StylesGenerator {
         return element;
     };
 
-    getStyle = (cell: Cell) => {
+    create = (cell: Cell) => {
         const format = this.formats.getFormat(cell.format);
         const font = this.fonts.getFont(cell.font);
         const fill = this.fills.getFill(cell.fill);
@@ -86,8 +86,8 @@ export default class StylesGenerator {
     };
 
     generate = () =>
-        doc(
-            ele(
+        $doc(
+            $ele(
                 'styleSheet',
                 {
                     xmlns: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',

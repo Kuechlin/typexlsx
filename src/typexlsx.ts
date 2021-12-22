@@ -2,6 +2,7 @@ import WorkbookGenerator from './generators/workbook';
 import JSZip from 'jszip';
 import { Workbook } from './types';
 import xml from './xml';
+export { default as htmlTableToSheet } from './utils/htmlTableToSheet';
 
 export default async function generateXlsx(...book: Workbook) {
     const generator = new WorkbookGenerator();

@@ -4,15 +4,20 @@ import { $ele, XMLElement } from '../../xml';
 type FillType = string | { gray125?: true };
 
 export default class FillsGenerator {
-    fills: FillType[] = [
-        // default fill
-        {},
-        // "gray125" fill.
-        // For some weird reason, MS Office 2007 Excel seems to require that to be present.
-        // Otherwise, if absent, it would replace the first `backgroundColor`.
-        { gray125: true },
-    ];
-    fillsIndex = new Map<string, number>();
+    fills: FillType[];
+    fillsIndex: Map<string, number>;
+
+    constructor() {
+        this.fills = [
+            // default fill
+            {},
+            // "gray125" fill.
+            // For some weird reason, MS Office 2007 Excel seems to require that to be present.
+            // Otherwise, if absent, it would replace the first `backgroundColor`.
+            { gray125: true },
+        ];
+        this.fillsIndex = new Map([['', 0]]);
+    }
 
     getFill = (fill?: string) => {
         if (!fill) return 0;

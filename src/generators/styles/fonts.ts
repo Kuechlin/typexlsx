@@ -10,11 +10,12 @@ const FONT_STYLES: Record<string, XMLElement> = {
 };
 
 export default class FontsGenerator {
-    fonts: XLSXFont[] = [];
-    fontsIndex = new Map<string, number>();
+    fonts: XLSXFont[];
+    fontsIndex: Map<string, number>;
 
     constructor() {
-        this.fontsIndex.set(this.getFontKey({}), 0);
+        this.fonts = [{}];
+        this.fontsIndex = new Map([[this.getFontKey({}), 0]]);
     }
 
     private getFontKey = ({

@@ -1,17 +1,19 @@
-import generateXlsx from '../src/typexlsx';
+import hljs from 'highlight.js/lib/core';
+import tsLang from 'highlight.js/lib/languages/typescript';
+import xmlLang from 'highlight.js/lib/languages/xml';
+import cssLang from 'highlight.js/lib/languages/css';
+hljs.registerLanguage('typescript', tsLang);
+hljs.registerLanguage('xml', xmlLang);
+hljs.registerLanguage('css', cssLang);
+import generateXlsx, { htmlTableToSheet } from '../src/typexlsx';
 import { saveAs } from 'file-saver';
 import { Sheet } from '../src/types';
-import tableToXlsx from './tableToXlsx';
+import 'highlight.js/styles/atom-one-dark.css';
+import './styles.css';
 
-const app = document.getElementById('app');
-if (!app) throw new Error('app not found');
+hljs.highlightAll();
 
-var title = app.appendChild(document.createElement('h1'));
-title.innerText = 'typexlsx';
-
-var btn = app.appendChild(document.createElement('button'));
-btn.innerText = 'Download XLSX';
-var log = app.appendChild(document.createElement('p'));
+var btnDownload = document.getElementById('btn:download') as HTMLButtonElement;
 
 const TEST_FILE: Sheet = {
     name: 'TestFile',
@@ -21,37 +23,36 @@ const TEST_FILE: Sheet = {
             { value: 'B' },
             {
                 value: 'C',
-                font: { family: 'Arial', color: '#123456' },
-                fill: '#fdfdfd',
+                font: { family: 'Times New Roman', color: '#00FF00' },
+                fill: '#880077',
             },
         ],
         [{ value: 1 }, { value: 2 }, { value: 3 }],
-        [{ value: 'test', span: 3, rowSpan: 2 }, {}, {}],
-        [{}, {}, {}],
+        [{ value: 'test', span: 3, rowSpan: 2 }],
     ],
 };
 
-btn.onclick = function generate() {
-    log.innerText = 'generating...';
+btnDownload.onclick = function generate() {
+    console.log('generating...');
     generateXlsx(TEST_FILE)
         .then((blob) => {
-            log.innerText = 'saving...';
+            console.log('saving...');
             saveAs(blob, 'Workbook.xlsx');
-            log.innerText = 'done';
+            console.log('done');
         })
-        .catch((err) => (log.innerText = String(err)));
+        .catch((err) => console.log(String(err)));
 };
 
-var btn2 = app.appendChild(document.createElement('button'));
-btn2.innerText = 'Export HTML Table';
-
-btn2.onclick = function () {
-    log.innerText = 'generating...';
-    tableToXlsx(document.getElementById('table') as HTMLTableElement)
+var btnExport = document.getElementById('btn:export') as HTMLButtonElement;
+btnExport.onclick = function () {
+    console.log('generating...');
+    generateXlsx(
+        htmlTableToSheet(document.getElementById('table') as HTMLTableElement)
+    )
         .then((blob) => {
-            log.innerText = 'saving...';
+            console.log('saving...');
             saveAs(blob, 'Workbook.xlsx');
-            log.innerText = 'done';
+            console.log('done');
         })
-        .catch((err) => (log.innerText = String(err)));
+        .catch((err) => console.log(String(err)));
 };

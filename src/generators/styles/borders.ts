@@ -3,12 +3,12 @@ import convertToExcelRgb from '../../utils/convertToExcelRgb';
 import { $ele } from '../../xml';
 
 export default class BordersGenerator {
-    borders: XLSXBorders[] = [];
-    bordersIndex = new Map<string, number>();
+    borders: XLSXBorders[];
+    bordersIndex: Map<string, number>;
 
     constructor() {
-        this.borders.push({});
-        this.bordersIndex.set(this.getBorderKey({}), 0);
+        this.borders = [{}];
+        this.bordersIndex = new Map([[this.getBorderKey({}), 0]]);
     }
 
     private getBorderKey = (val?: XLSXBorder) =>

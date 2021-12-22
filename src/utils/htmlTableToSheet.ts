@@ -1,5 +1,4 @@
-import { Cell, Row, Sheet } from '../src/types';
-import generateXlsx from '../src/typexlsx';
+import { Cell, Row, Sheet } from '../types';
 
 /*
     innerText -> cell.value
@@ -7,6 +6,15 @@ import generateXlsx from '../src/typexlsx';
     css vertical-align -> cell.alignVertical
     ...
 */
+
+export default function htmlTableToSheet(table: HTMLTableElement) {
+    const sheet: Sheet = {
+        name: table.title,
+        rows: [],
+    };
+    generateSheet(sheet.rows, table.children);
+    return sheet;
+}
 
 const convertToHex = (val: string | null | undefined) => {
     if (!val) return undefined;
@@ -85,12 +93,3 @@ const generateSheet = (rows: Row[], children: HTMLCollection) => {
         }
     }
 };
-
-export default function tableToXlsx(table: HTMLTableElement) {
-    const sheet: Sheet = {
-        name: table.title,
-        rows: [],
-    };
-    generateSheet(sheet.rows, table.children);
-    return generateXlsx(sheet);
-}

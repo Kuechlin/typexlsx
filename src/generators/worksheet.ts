@@ -28,10 +28,49 @@ export default class WorksheetGenerator {
         );
     };
 
-    generateSheet = (rows: Row[]) =>
+    private generateMergedCells(rows: Row[]) {
+        const cells: XMLElement[] = [];
+        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+            const rowNumber = rowIndex + 1;
+            const row = rows[rowIndex];
+            for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
+                const { span, rowSpan } = row[cellIndex];
+                let xSpan = span || 1;
+                let ySpan = rowSpan || 1;
+                if ((!xSpan || xSpan === 1) && (!ySpan || ySpan === 1))
+                    continue;
+                let start = generateCellNumber(cellIndex, rowNumber);
+                let end = generateCellNumber(
+                    cellIndex + xSpan - 1,
+                    rowNumber + ySpan - 1
+                );
+                cells.push($ele('mergeCell', { ref: `${start}:${end}` }));
+                // add empty cells to create merge cell
+                let first = true;
+                for (let y = 0; y < ySpan; y++) {
+                    let index = rowIndex + y;
+                    if (rows.length <= index) {
+                        rows.push([]);
+                    }
+                    if (xSpan > 1) {
+                        rows[index].splice(
+                            cellIndex + 1,
+                            0,
+                            ...new Array(first ? xSpan - 1 : xSpan).fill({})
+                        );
+                        first = false;
+                    }
+                }
+            }
+        }
+        if (cells.length === 0) return null;
+        return $ele('mergeCells', { count: cells.length }, ...cells);
+    }
+
+    private generateSheet = (rows: Row[]) =>
         $ele('sheetData', {}, ...rows.map(this.generateRow));
 
-    generateRow = (row: Row, index: number): XMLElement => {
+    private generateRow = (row: Row, index: number): XMLElement => {
         // To ensure the row number starts as in Excel.
         const rowNumber = index + 1;
 
@@ -46,7 +85,7 @@ export default class WorksheetGenerator {
         return element;
     };
 
-    generateCell = (cell: Cell, rowNumber: number, index: number) => {
+    private generateCell = (cell: Cell, rowNumber: number, index: number) => {
         const styleId = this.workbook.styles.create(cell);
         const element = $ele('c', {
             r: generateCellNumber(index, rowNumber),
@@ -85,27 +124,6 @@ export default class WorksheetGenerator {
         }
         return element;
     };
-
-    generateMergedCells(rows: Row[]) {
-        const cells: XMLElement[] = [];
-        for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-            const rowNumber = rowIndex + 1;
-            const row = rows[rowIndex];
-            for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
-                const { span, rowSpan } = row[cellIndex];
-                if (span || rowSpan) {
-                    let start = generateCellNumber(cellIndex, rowNumber);
-                    let end = generateCellNumber(
-                        cellIndex + (span || 0),
-                        rowNumber + (rowSpan || 0)
-                    );
-                    cells.push($ele('mergeCell', { ref: `${start}:${end}` }));
-                }
-            }
-        }
-        if (cells.length === 0) return null;
-        return $ele('mergeCells', { count: cells.length }, ...cells);
-    }
 }
 /*
 <?xml version="1.0" ?>

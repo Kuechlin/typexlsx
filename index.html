@@ -4,33 +4,108 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>typexlsx</title>
-        <style>
-            table {
-                border-collapse: collapse;
-            }
-            th {
-                background-color: #aa0000;
-            }
-            td {
-                background-color: #000055;
-                color: #fff;
-            }
-        </style>
+        <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+        <link
+            rel="alternate icon"
+            type="image/png"
+            href="./assets/favicon32x32.png"
+        />
     </head>
     <body>
-        <table id="table">
-            <tr>
-                <th>A</th>
-                <th>B</th>
-                <th>C</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-            </tr>
-        </table>
-        <div id="app"></div>
-        <script type="module" src="/docs/main.ts"></script>
+        <div id="app">
+            <div class="row" style="align-items: center">
+                <img src="./assets/favicon64x64.png" width="64" height="64" />
+                <div>
+                    <h1>typexlsx</h1>
+                    <h5>Write *.xlsx files in a browser or Node.js</h5>
+                </div>
+            </div>
+            <div class="row">
+                <!--export data sheet-->
+                <div class="box">
+                    <h2>export Data Sheet to xlsx</h2>
+                    <div class="content">
+                        <pre><code style="flex-grow: 1;" class="language-typescript">import { saveAs } from 'file-saver';
+import generateXlsx from 'typexlsx';
+
+const sheet: Sheet = {
+    name: 'TestFile',
+    rows: [
+        [
+            { value: 'A' },
+            { value: 'B' },
+            {
+                value: 'C',
+                font: { family: 'Times New Roman', color: '#00FF00' },
+                fill: '#880077',
+            },
+        ],
+        [{ value: 1 }, { value: 2 }, { value: 3 }],
+        [{ value: 'test', span: 3, rowSpan: 2 }],
+    ],
+};
+
+generateXlsx(TEST_FILE)
+    .then((blob) => saveAs(blob, 'Workbook.xlsx'))
+    .catch((err) => console.error(err));</code></pre>
+                    </div>
+                    <button id="btn:download">Download XLSX</button>
+                </div>
+                <!--export html table-->
+                <div class="box">
+                    <h2>export HTML Table to xlsx</h2>
+                    <div class="content">
+                        <pre><code class="language-css">table {
+    border-collapse: collapse;
+}
+th {
+    background-color: #a61d24;
+}
+td {
+    background-color: #306317;
+}</code></pre>
+                        <br />
+                        <pre><code class="language-xml">&lt;table id=&quot;table&quot;&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th&gt;A&lt;/th&gt;
+            &lt;th&gt;B&lt;/th&gt;
+            &lt;th&gt;C&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td&gt;3&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+                        <br />
+                        <pre><code class="language-typescript">import { saveAs } from 'file-saver';
+import generateXlsx, { htmlTableToSheet } from 'typexlsx';
+
+generateXlsx(htmlTableToSheet(document.getElementById('table')))
+    .then((blob) => saveAs(blob, 'Workbook.xlsx'))
+    .catch((err) => console.error(err));</code></pre>
+                        <br />
+                        <table id="table">
+                            <tbody>
+                                <tr>
+                                    <th>A</th>
+                                    <th>B</th>
+                                    <th>C</th>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="btn:export">Export HTML Table</button>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="./docs/main.ts"></script>
     </body>
 </html>

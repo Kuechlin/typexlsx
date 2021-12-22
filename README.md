@@ -1,20 +1,25 @@
+![favicon](assets/favicon64x64.png)
+
 # typexlsx
 
-Write *.xlsx files in a browser or Node.js
+Write \*.xlsx files in a browser or Node.js
+
+### 🚨 in development 🚨
 
 ### [Demo](https://kuechlin.github.io/typexlsx/)
 
 ## Features
-- small
-- styles
-  - fonts
-  - fill
-  - border
-  - formats
-- types
-  - string
-  - number
-  - date
+
+-   small
+-   styles
+    -   fonts
+    -   fill
+    -   border
+    -   formats
+-   types
+    -   string
+    -   number
+    -   date
 
 ## Install
 
@@ -26,10 +31,11 @@ with yarn:
 
     yarn add typexlsx
 
-to save the blob you could for example use [file-saver](https://github.com/eligrey/FileSaver.js) 
+to save the blob you could for example use [file-saver](https://github.com/eligrey/FileSaver.js)
 
 ## Use
-to write an *.xlsx file, 
+
+to write an \*.xlsx file,
 provide the sheet data, each cell having a type, style and a value:
 
 ```typescript
@@ -45,31 +51,33 @@ const sheet: Sheet = {
 };
 
 generateXlsx(TEST_FILE)
-        .then((blob) => saveAs(blob, 'Workbook.xlsx'))
-        .catch((err) => console.error(err));
+    .then((blob) => saveAs(blob, 'Workbook.xlsx'))
+    .catch((err) => console.error(err));
 ```
-
-
 
 ## Api
 
 ### Workbook
+
 Workbook is an array of Sheets.
 
 ### Sheet
+
 | Name  | Type   | Description   |
-|-------|--------|---------------|
+| ----- | ------ | ------------- |
 | name? | string | name of Sheet |
 | rows  | Row[]  | array of rows |
 
 ### Row
+
 A Row is an array of Cells
 
 ### Cell
+
 | Name           | Type                             | Description           |
-|----------------|----------------------------------|-----------------------|
+| -------------- | -------------------------------- | --------------------- |
 | value?         | string / number / boolean / Date | cell value            |
-| align?         | left / center / right            | text align            |  
+| align?         | left / center / right            | text align            |
 | alignVertical? | top / center / bottom            | vertical align        |
 | wrap?          | boolean                          | text wrap             |
 | format?        | string                           | number or date format |
@@ -80,22 +88,25 @@ A Row is an array of Cells
 | border?        | BorderStyles                     | border styles         |
 
 ### XLSXFont
-| Name    | Type                       | Description  |
-|---------|----------------------------|--------------|
-| style?  | 'bold' / 'italic' / 'none' | font style   |
-| size?   | number                     | font size    |
-| family? | string                     | font family  |
-| color?  | string                     | hex color    |
+
+| Name    | Type                       | Description |
+| ------- | -------------------------- | ----------- |
+| style?  | 'bold' / 'italic' / 'none' | font style  |
+| size?   | number                     | font size   |
+| family? | string                     | font family |
+| color?  | string                     | hex color   |
 
 ### XLSXBorder
+
 | Name   | Type            | Description  |
-|--------|-----------------|--------------|
+| ------ | --------------- | ------------ |
 | color? | string          | hex color    |
 | style? | XLSXBorderStyle | border style |
 
 ### XLSXBorders
+
 | Name      | Type       | Description           |
-|-----------|------------|-----------------------|
+| --------- | ---------- | --------------------- |
 | start?    | XLSXBorder | left border style     |
 | end?      | XLSXBorder | right border style    |
 | top?      | XLSXBorder | top border style      |
@@ -103,15 +114,16 @@ A Row is an array of Cells
 | diagonal? | XLSXBorder | diagonal border style |
 
 ### XLSXBorderStyle
-- thin
-- medium
-- thick
-- dotted
-- hair
-- dashed
-- mediumDashed
-- dashDot
-- mediumDashDot
-- dashDotDot
-- mediumDashDotDot
-- slantDashDot
+
+-   thin
+-   medium
+-   thick
+-   dotted
+-   hair
+-   dashed
+-   mediumDashed
+-   dashDot
+-   mediumDashDot
+-   dashDotDot
+-   mediumDashDotDot
+-   slantDashDot

@@ -19,7 +19,7 @@ const stringifyAttributes = (attr: Record<string, any>) => {
 const stringifyElement = (ele: XMLElement | XMLValue): string => {
     if (ele.$type === 'value') return ele.$value;
     let xml = `<${ele.$name}${stringifyAttributes(ele)}`;
-    if (ele.$elements) {
+    if (ele.$elements && ele.$elements.length) {
         xml += '>';
         for (const element of ele.$elements) {
             xml += stringifyElement(element);

@@ -37,7 +37,7 @@ body,
 }
 .box .content {
     flex-grow: 1;
-    margin: 16px 0px;
+    margin: 16px 0;
 }
 .box pre,
 .box code {
@@ -58,10 +58,25 @@ button:hover {
 
 table {
     border-collapse: collapse;
+    width: 100%;
+    text-align: center;
 }
-th {
-    background-color: #a61d24;
+table > thead > tr > th {
+    background-color: #c5d9f1;
 }
-td {
-    background-color: #306317;
+.even {
+    background-color: #d8e4bc;
+}
+.odd {
+    background-color: #ebf1de;
+}
+table > tfoot > tr {
+    background-color: #d99594;
+}
+table > thead > tr > th,
+table > tbody > tr > td,
+table > tfoot > tr > td {
+    color: black;
+    padding: 4px;
+    border: 2px solid black;
 }

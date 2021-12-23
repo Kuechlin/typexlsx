@@ -91,9 +91,10 @@ export default class StylesGenerator {
             borderId: border,
             align: cell.align,
             alignVertical: cell.alignVertical,
+            wrap: cell.wrap
         };
 
-        var key = this.getStyleKey(style);
+        const key = this.getStyleKey(style);
         if (!this.stylesIndex.has(key)) {
             this.stylesIndex.set(key, this.styles.push(style) - 1);
         }

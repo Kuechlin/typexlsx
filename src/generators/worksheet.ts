@@ -1,9 +1,10 @@
-import { Cell, Row, Sheet } from '../types';
+import {Cell, Row, Sheet} from '../types';
 import convertDateToExcelSerial from '../utils/convertDateToExcelSerial';
 import generateCellNumber from '../utils/generateCellNumber';
-import { $doc, $ele, $val, XMLElement } from '../xml';
-import { WORKSHEET_XML_ATTRIBUTES } from './const';
+import {$doc, $ele, $val, XMLElement} from '../xml';
+import {WORKSHEET_XML_ATTRIBUTES} from './const';
 import WorkbookGenerator from './workbook';
+import {maxBy} from '../utils/common';
 
 // c: cell number
 // x: style id
@@ -17,18 +18,19 @@ export default class WorksheetGenerator {
     constructor(private workbook: WorkbookGenerator) {}
 
     generate = (sheet: Sheet) => {
-        const mergeCells = this.generateMergedCells(sheet.rows);
+        const mergeCells = WorksheetGenerator.generateMergedCells(sheet.rows);
         return $doc(
             $ele(
                 'worksheet',
                 WORKSHEET_XML_ATTRIBUTES,
+                this.generateCols(sheet.rows),
                 this.generateSheet(sheet.rows),
                 ...(mergeCells ? [mergeCells] : [])
             )
         );
     };
 
-    private generateMergedCells(rows: Row[]) {
+    private static generateMergedCells(rows: Row[]) {
         const cells: XMLElement[] = [];
         for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
             const rowNumber = rowIndex + 1;
@@ -46,19 +48,20 @@ export default class WorksheetGenerator {
                 );
                 cells.push($ele('mergeCell', { ref: `${start}:${end}` }));
                 // add empty cells to create merge cell
-                let first = true;
                 for (let y = 0; y < ySpan; y++) {
                     let index = rowIndex + y;
                     if (rows.length <= index) {
                         rows.push([]);
                     }
-                    if (xSpan > 1) {
+                    if (xSpan > 1 || (y > 0 && xSpan > 0)) {
+                        const insert = y === 0 ? cellIndex + 1 : cellIndex;
+                        const count = y === 0 ? xSpan - 1 : xSpan;
+
                         rows[index].splice(
-                            cellIndex + 1,
+                            insert,
                             0,
-                            ...new Array(first ? xSpan - 1 : xSpan).fill({})
+                            ...new Array(count).fill({})
                         );
-                        first = false;
                     }
                 }
             }
@@ -69,6 +72,21 @@ export default class WorksheetGenerator {
 
     private generateSheet = (rows: Row[]) =>
         $ele('sheetData', {}, ...rows.map(this.generateRow));
+
+    private generateCols = (rows: Row[]) => {
+        const element = $ele('cols');
+        element.$elements = [];
+        const colCount = maxBy(rows, (r) => r.length);
+        for (let i = 0; i < colCount; i++) {
+            element.$elements.push(
+                $ele('col', {
+                    max: i + 1,
+                    min: i + 1,
+                })
+            );
+        }
+        return element;
+    };
 
     private generateRow = (row: Row, index: number): XMLElement => {
         // To ensure the row number starts as in Excel.

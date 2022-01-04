@@ -10,16 +10,16 @@ Write \*.xlsx files in a browser or Node.js
 
 ## Features
 
--   small
--   styles
-    -   fonts
-    -   fill
-    -   border
-    -   formats
--   types
-    -   string
-    -   number
-    -   date
+- small
+- styles
+    - fonts
+    - fill
+    - border
+    - formats
+- types
+    - string
+    - number
+    - date
 
 ## Install
 
@@ -35,18 +35,17 @@ to save the blob you could for example use [file-saver](https://github.com/eligr
 
 ## Use
 
-to write an \*.xlsx file,
-provide the sheet data, each cell having a type, style and a value:
+to write an \*.xlsx file, provide the sheet data, each cell having a type, style and a value:
 
 ```typescript
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 import generateXlsx from '../src/typexlsx';
 
 const sheet: Sheet = {
     name: 'TestFile',
     rows: [
-        [{ value: 'A' }, { value: 'B' }, { value: 'C' }],
-        [{ value: 1 }, { value: 2 }, { value: 3 }],
+        [{value: 'A'}, {value: 'B'}, {value: 'C'}],
+        [{value: 1}, {value: 2}, {value: 3}],
     ],
 };
 
@@ -115,15 +114,37 @@ A Row is an array of Cells
 
 ### XLSXBorderStyle
 
--   thin
--   medium
--   thick
--   dotted
--   hair
--   dashed
--   mediumDashed
--   dashDot
--   mediumDashDot
--   dashDotDot
--   mediumDashDotDot
--   slantDashDot
+- thin
+- medium
+- thick
+- dotted
+- hair
+- dashed
+- mediumDashed
+- dashDot
+- mediumDashDot
+- dashDotDot
+- mediumDashDotDot
+- slantDashDot
+
+### XLSX Date / Number Format
+
+[Source](https://xlsxwriter.readthedocs.io/format.html#format-set-num-format)
+
+| Format                        |
+|-------------------------------|
+| 0                             |
+| 0.00                          |
+| #,##0                         |
+| #,##0.00                      |
+| 0%                            |
+| 0.00%                         |
+| m/d/yy                        |
+| d-mmm-yy                      |
+| d-mmm                         |
+| mmm-yy                        |
+| h:mm AM/PM                    |
+| h:mm:ss AM/PM                 |
+| h:mm                          |
+| h:mm:ss                       |
+| m/d/yy h:mm                   |

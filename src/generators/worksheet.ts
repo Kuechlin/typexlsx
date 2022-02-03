@@ -1,10 +1,9 @@
-import {Cell, Row, Sheet} from '../types';
+import { Cell, Row, Sheet } from '../types';
 import convertDateToExcelSerial from '../utils/convertDateToExcelSerial';
 import generateCellNumber from '../utils/generateCellNumber';
-import {$doc, $ele, $val, XMLElement} from '../xml';
-import {WORKSHEET_XML_ATTRIBUTES} from './const';
+import { $doc, $ele, $val, XMLElement } from '../xml';
+import { WORKSHEET_XML_ATTRIBUTES } from './const';
 import WorkbookGenerator from './workbook';
-import {maxBy} from '../utils/common';
 
 // c: cell number
 // x: style id
@@ -23,7 +22,6 @@ export default class WorksheetGenerator {
             $ele(
                 'worksheet',
                 WORKSHEET_XML_ATTRIBUTES,
-                this.generateCols(sheet.rows),
                 this.generateSheet(sheet.rows),
                 ...(mergeCells ? [mergeCells] : [])
             )
@@ -72,21 +70,6 @@ export default class WorksheetGenerator {
 
     private generateSheet = (rows: Row[]) =>
         $ele('sheetData', {}, ...rows.map(this.generateRow));
-
-    private generateCols = (rows: Row[]) => {
-        const element = $ele('cols');
-        element.$elements = [];
-        const colCount = maxBy(rows, (r) => r.length);
-        for (let i = 0; i < colCount; i++) {
-            element.$elements.push(
-                $ele('col', {
-                    max: i + 1,
-                    min: i + 1,
-                })
-            );
-        }
-        return element;
-    };
 
     private generateRow = (row: Row, index: number): XMLElement => {
         // To ensure the row number starts as in Excel.

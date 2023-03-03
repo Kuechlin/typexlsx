@@ -1,15 +1,15 @@
+import { saveAs } from 'file-saver';
 import hljs from 'highlight.js/lib/core';
+import cssLang from 'highlight.js/lib/languages/css';
 import tsLang from 'highlight.js/lib/languages/typescript';
 import xmlLang from 'highlight.js/lib/languages/xml';
-import cssLang from 'highlight.js/lib/languages/css';
+import 'highlight.js/styles/atom-one-dark.css';
+import { Sheet } from '../src/types';
+import generateXlsx, { htmlTableToSheet } from '../src/typexlsx';
+import './styles.css';
 hljs.registerLanguage('typescript', tsLang);
 hljs.registerLanguage('xml', xmlLang);
 hljs.registerLanguage('css', cssLang);
-import generateXlsx, { htmlTableToSheet } from '../src/typexlsx';
-import { saveAs } from 'file-saver';
-import { Sheet } from '../src/types';
-import 'highlight.js/styles/atom-one-dark.css';
-import './styles.css';
 
 hljs.highlightAll();
 
@@ -19,7 +19,11 @@ const TEST_FILE: Sheet = {
     name: 'TestFile',
     rows: [
         [
-            { value: 'A' },
+            {
+                value: 'A',
+                span: 2,
+                border: { end: { color: '#000000', style: 'thick' } },
+            },
             { value: 'B' },
             {
                 value: 'C',

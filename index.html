@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>typexlsx</title>
-    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg"/>
-    <link
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>typexlsx</title>
+        <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+        <link
             rel="alternate icon"
             type="image/png"
             href="./assets/favicon32x32.png"
-    />
-</head>
-<body>
-<div id="app">
-    <div class="row" style="align-items: center">
-        <img src="./assets/favicon64x64.png" width="64" height="64" alt="logo"/>
-        <div>
-            <h1>typexlsx</h1>
-            <h5>Write *.xlsx files in a browser or Node.js</h5>
-        </div>
-    </div>
-    <div class="row">
-        <!--export data sheet-->
-        <div class="box">
-            <h2>export Data Sheet to xlsx</h2>
-            <div class="content">
+        />
+    </head>
+    <body>
+        <div id="app">
+            <div class="row" style="align-items: center">
+                <img
+                    src="./assets/favicon64x64.png"
+                    width="64"
+                    height="64"
+                    alt="logo"
+                />
+                <div>
+                    <h1>typexlsx</h1>
+                    <h5>Write *.xlsx files in a browser or Node.js</h5>
+                </div>
+            </div>
+            <div class="row">
+                <!--export data sheet-->
+                <div class="box">
+                    <h2>export Data Sheet to xlsx</h2>
+                    <div class="content">
                         <pre><code style="flex-grow: 1;" class="language-typescript">import { saveAs } from 'file-saver';
 import generateXlsx from 'typexlsx';
 
@@ -32,7 +37,11 @@ const sheet: Sheet = {
     name: 'TestFile',
     rows: [
         [
-            { value: 'A' },
+            {
+                value: 'A',
+                span: 2,
+                border: { end: { color: '#000000', style: 'thick' } },
+            },
             { value: 'B' },
             {
                 value: 'C',
@@ -48,13 +57,13 @@ const sheet: Sheet = {
 generateXlsx(TEST_FILE)
     .then((blob) => saveAs(blob, 'Workbook.xlsx'))
     .catch((err) => console.error(err));</code></pre>
-            </div>
-            <button id="btn:download">Download XLSX</button>
-        </div>
-        <!--export html table-->
-        <div class="box">
-            <h2>export HTML Table to xlsx</h2>
-            <div class="content">
+                    </div>
+                    <button id="btn:download">Download XLSX</button>
+                </div>
+                <!--export html table-->
+                <div class="box">
+                    <h2>export HTML Table to xlsx</h2>
+                    <div class="content">
                         <pre><code class="language-css">table {
     border-collapse: collapse;
     width: 100%;
@@ -79,126 +88,128 @@ table > tfoot > tr > td {
     padding: 4px;
     border: 2px solid black;
 }</code></pre>
-                <br/>
-                <pre><code class="language-typescript">import { saveAs } from 'file-saver';
+                        <br />
+                        <pre><code class="language-typescript">import { saveAs } from 'file-saver';
 import generateXlsx, { htmlTableToSheet } from 'typexlsx';
 
 generateXlsx(htmlTableToSheet(document.getElementById('table')))
     .then((blob) => saveAs(blob, 'Workbook.xlsx'))
     .catch((err) => console.error(err));</code></pre>
-                <br/>
-                <table id="table">
-                    <thead>
-                    <tr>
-                        <th>Anlagen Nr.</th>
-                        <th>Wechselrichter</th>
-                        <th>Dachausrichtung</th>
-                        <th>Dachneigung</th>
-                        <th>Strings</th>
-                        <th>Module pro String</th>
-                        <th>Module pro WR</th>
-                        <th>kWp pro WR</th>
-                        <th>Kunde</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="even">
-                        <td rowspan="6">3</td>
-                        <td rowspan="6">Huawei SUN2000 60KTL-M0</td>
-                        <td>90°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>18</td>
-                        <td rowspan="6">210</td>
-                        <td rowspan="6">67,200 kWp</td>
-                        <td rowspan="6">Max Mustermann</td>
-                    </tr>
-                    <tr class="even">
-                        <td>90°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>18</td>
-                    </tr>
-                    <tr class="even">
-                        <td>90°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>18</td>
-                    </tr>
-                    <tr class="even">
-                        <td>90°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>17</td>
-                    </tr>
-                    <tr class="even">
-                        <td>90°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>17</td>
-                    </tr>
-                    <tr class="even">
-                        <td>90°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>17</td>
-                    </tr>
-                    <tr class="odd">
-                        <td rowspan="6">6</td>
-                        <td rowspan="6">Huawei SUN2000 60KTL-M0</td>
-                        <td>0°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>16</td>
-                        <td rowspan="6">172</td>
-                        <td rowspan="6">66,666 kWp</td>
-                        <td rowspan="6">Max Mustermann</td>
-                    </tr>
-                    <tr class="odd">
-                        <td>0°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>14</td>
-                    </tr>
-                    <tr class="odd">
-                        <td>0°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>14</td>
-                    </tr>
-                    <tr class="odd">
-                        <td>0°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>14</td>
-                    </tr>
-                    <tr class="odd">
-                        <td>0°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>14</td>
-                    </tr>
-                    <tr class="odd">
-                        <td>0°</td>
-                        <td>12°</td>
-                        <td>2</td>
-                        <td>14</td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <th colspan="6" style="text-align: right;">Summe:</th>
-                        <th>382</th>
-                        <th>69,420 kWp</th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
-                </table>
+                        <br />
+                        <table id="table">
+                            <thead>
+                                <tr>
+                                    <th>Anlagen Nr.</th>
+                                    <th>Wechselrichter</th>
+                                    <th>Dachausrichtung</th>
+                                    <th>Dachneigung</th>
+                                    <th>Strings</th>
+                                    <th>Module pro String</th>
+                                    <th>Module pro WR</th>
+                                    <th>kWp pro WR</th>
+                                    <th>Kunde</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="even">
+                                    <td rowspan="6">3</td>
+                                    <td rowspan="6">Huawei SUN2000 60KTL-M0</td>
+                                    <td>90°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>18</td>
+                                    <td rowspan="6">210</td>
+                                    <td rowspan="6">67,200 kWp</td>
+                                    <td rowspan="6">Max Mustermann</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>90°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>18</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>90°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>18</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>90°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>17</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>90°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>17</td>
+                                </tr>
+                                <tr class="even">
+                                    <td>90°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>17</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td rowspan="6">6</td>
+                                    <td rowspan="6">Huawei SUN2000 60KTL-M0</td>
+                                    <td>0°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>16</td>
+                                    <td rowspan="6">172</td>
+                                    <td rowspan="6">66,666 kWp</td>
+                                    <td rowspan="6">Max Mustermann</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>0°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>14</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>0°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>14</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>0°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>14</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>0°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>14</td>
+                                </tr>
+                                <tr class="odd">
+                                    <td>0°</td>
+                                    <td>12°</td>
+                                    <td>2</td>
+                                    <td>14</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="6" style="text-align: right">
+                                        Summe:
+                                    </th>
+                                    <th>382</th>
+                                    <th>69,420 kWp</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <button id="btn:export">Export HTML Table</button>
+                </div>
             </div>
-            <button id="btn:export">Export HTML Table</button>
         </div>
-    </div>
-</div>
-<script type="module" src="./docs/main.ts"></script>
-</body>
+        <script type="module" src="./docs/main.ts"></script>
+    </body>
 </html>

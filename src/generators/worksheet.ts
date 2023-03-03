@@ -34,7 +34,7 @@ export default class WorksheetGenerator {
             const rowNumber = rowIndex + 1;
             const row = rows[rowIndex];
             for (let cellIndex = 0; cellIndex < row.length; cellIndex++) {
-                const { span, rowSpan } = row[cellIndex];
+                const { span, rowSpan, value, ...styles } = row[cellIndex];
                 let xSpan = span || 1;
                 let ySpan = rowSpan || 1;
                 if ((!xSpan || xSpan === 1) && (!ySpan || ySpan === 1))
@@ -58,7 +58,7 @@ export default class WorksheetGenerator {
                         rows[index].splice(
                             insert,
                             0,
-                            ...new Array(count).fill({})
+                            ...new Array(count).fill(styles)
                         );
                     }
                 }
